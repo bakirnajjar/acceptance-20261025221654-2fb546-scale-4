@@ -1,0 +1,193 @@
+{
+  "schema_version": "1.0",
+  "stage": "requirements_analysis",
+  "source_references": [
+    {
+      "source_type": "user_story",
+      "source_id": "user_story",
+      "locator": "characters 0-16000"
+    },
+    {
+      "source_type": "knowledge",
+      "source_id": "59efeb19-83f2-4ec6-bfd3-b4aeb7142930",
+      "locator": "v1, chunk 0"
+    },
+    {
+      "source_type": "knowledge",
+      "source_id": "467a71ce-c5f8-4557-8f1e-a8ff1b01ecc3",
+      "locator": "v1, chunk 0"
+    }
+  ],
+  "assumptions": [
+    "acceptance-20261025221654-2fb546-skill-sentinel — the acceptance requirements skill produced this output.",
+    "For the non-blocking question about reset-link delivery and customer identification, leave both mechanisms unspecified; require only the link behavior established by the curated standard.",
+    "For the non-blocking question about owner notification, leave the notification channel and content unspecified; require only notification after every successful reset.",
+    "For the non-blocking question about the request limit, assume a sixth request for the same account within the hour issues no additional reset link. Leave hour-window interpretation, storage, and response wording unspecified; the identical-response requirement still applies."
+  ],
+  "open_questions": [
+    {
+      "question": "How is the reset link delivered, and how is the customer identified for a reset request?",
+      "context": "Non-blocking: the requirements leave delivery and identification mechanisms unspecified.",
+      "blocking": false
+    },
+    {
+      "question": "How is the account owner notified after a successful reset?",
+      "context": "Non-blocking: the requirements leave notification channel and content unspecified.",
+      "blocking": false
+    },
+    {
+      "question": "How are further requests handled after five requests per account per hour, and how is the hour measured?",
+      "context": "Non-blocking: assume a sixth request within the hour issues no additional reset link, without specifying storage, response wording, or a fixed versus rolling window. The identical-response requirement still applies.",
+      "blocking": false
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "statement": "A customer can complete a password reset, replacing the password used to access the account.",
+      "acceptance_criteria": [
+        "Given a customer is completing a valid password reset, when the customer sets a new password and completes the reset, then the new password can be used to sign in and the former password cannot."
+      ],
+      "source_references": [
+        {
+          "source_type": "user_story",
+          "source_id": "user_story",
+          "locator": "characters 0-16000"
+        }
+      ]
+    },
+    {
+      "id": "REQ-002",
+      "statement": "The sign-in page offers a \"Forgot password?\" link that starts a password reset request.",
+      "acceptance_criteria": [
+        "Given the sign-in page is displayed, when a customer selects \"Forgot password?\", then the password reset request process starts."
+      ],
+      "source_references": [
+        {
+          "source_type": "knowledge",
+          "source_id": "59efeb19-83f2-4ec6-bfd3-b4aeb7142930",
+          "locator": "v1, chunk 0"
+        },
+        {
+          "source_type": "knowledge",
+          "source_id": "467a71ce-c5f8-4557-8f1e-a8ff1b01ecc3",
+          "locator": "v1, chunk 0"
+        }
+      ]
+    },
+    {
+      "id": "REQ-003",
+      "statement": "The response to a password reset request is identical whether or not the account exists.",
+      "acceptance_criteria": [
+        "Given an existing account and a nonexistent account, when an otherwise equivalent reset request is made for each, then the request responses are identical."
+      ],
+      "source_references": [
+        {
+          "source_type": "knowledge",
+          "source_id": "59efeb19-83f2-4ec6-bfd3-b4aeb7142930",
+          "locator": "v1, chunk 0"
+        },
+        {
+          "source_type": "knowledge",
+          "source_id": "467a71ce-c5f8-4557-8f1e-a8ff1b01ecc3",
+          "locator": "v1, chunk 0"
+        }
+      ]
+    },
+    {
+      "id": "REQ-004",
+      "statement": "Reset requests are limited to five per account per hour.",
+      "acceptance_criteria": [
+        "Given five reset requests have already been made for an account within an hour, when a sixth request is made for that account within the same hour, then it does not issue an additional reset link."
+      ],
+      "source_references": [
+        {
+          "source_type": "knowledge",
+          "source_id": "59efeb19-83f2-4ec6-bfd3-b4aeb7142930",
+          "locator": "v1, chunk 0"
+        },
+        {
+          "source_type": "knowledge",
+          "source_id": "467a71ce-c5f8-4557-8f1e-a8ff1b01ecc3",
+          "locator": "v1, chunk 0"
+        }
+      ]
+    },
+    {
+      "id": "REQ-005",
+      "statement": "A reset link is single-use.",
+      "acceptance_criteria": [
+        "Given an unused, unexpired reset link, when it is used to complete a successful reset, then a subsequent attempt to reset a password with that same link cannot succeed."
+      ],
+      "source_references": [
+        {
+          "source_type": "knowledge",
+          "source_id": "59efeb19-83f2-4ec6-bfd3-b4aeb7142930",
+          "locator": "v1, chunk 0"
+        },
+        {
+          "source_type": "knowledge",
+          "source_id": "467a71ce-c5f8-4557-8f1e-a8ff1b01ecc3",
+          "locator": "v1, chunk 0"
+        }
+      ]
+    },
+    {
+      "id": "REQ-006",
+      "statement": "A reset link expires 30 minutes after it is issued.",
+      "acceptance_criteria": [
+        "Given an unused reset link and its issue time, when a reset is attempted with that link at or after 30 minutes from issue, then the link cannot complete the reset."
+      ],
+      "source_references": [
+        {
+          "source_type": "knowledge",
+          "source_id": "59efeb19-83f2-4ec6-bfd3-b4aeb7142930",
+          "locator": "v1, chunk 0"
+        },
+        {
+          "source_type": "knowledge",
+          "source_id": "467a71ce-c5f8-4557-8f1e-a8ff1b01ecc3",
+          "locator": "v1, chunk 0"
+        }
+      ]
+    },
+    {
+      "id": "REQ-007",
+      "statement": "Completing a password reset signs the account out of every active session.",
+      "acceptance_criteria": [
+        "Given an account has multiple active sessions, when its password reset completes, then none of those sessions remains signed in."
+      ],
+      "source_references": [
+        {
+          "source_type": "knowledge",
+          "source_id": "59efeb19-83f2-4ec6-bfd3-b4aeb7142930",
+          "locator": "v1, chunk 0"
+        },
+        {
+          "source_type": "knowledge",
+          "source_id": "467a71ce-c5f8-4557-8f1e-a8ff1b01ecc3",
+          "locator": "v1, chunk 0"
+        }
+      ]
+    },
+    {
+      "id": "REQ-008",
+      "statement": "The account owner is notified after every successful password reset.",
+      "acceptance_criteria": [
+        "Given an account owner and a successful password reset for that account, when the reset completes, then that owner is notified about that reset; each subsequent successful reset likewise results in an owner notification."
+      ],
+      "source_references": [
+        {
+          "source_type": "knowledge",
+          "source_id": "59efeb19-83f2-4ec6-bfd3-b4aeb7142930",
+          "locator": "v1, chunk 0"
+        },
+        {
+          "source_type": "knowledge",
+          "source_id": "467a71ce-c5f8-4557-8f1e-a8ff1b01ecc3",
+          "locator": "v1, chunk 0"
+        }
+      ]
+    }
+  ]
+}
